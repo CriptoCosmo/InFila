@@ -18,14 +18,18 @@ service cloud.firestore {
         .hasOnly(['lastNumber', 'counterDay']);
     }
 
-    function isOwner(v) {
+    function isVenueOwner(v) {
+      return isSignedIn() && get(/databases/$(database)/documents/venues/$(v)).data.ownerUid == request.auth.uid;
+    }
+
+    function isOwner() {
       return isSignedIn() && resource.data.ownerUid == request.auth.uid;
     }
 
     match /venues/{v} {
       // La configurazione e il "numero in corso" sono pubblici: servono al QR e al monitor.
       allow read: if true;
-      allow update: if isOwner(v) || (isSignedIn() && onlyCounterFields());
+      allow update: if isOwner() || (isSignedIn() && onlyCounterFields());
       allow create: if isSignedIn() && request.resource.data.ownerUid == request.auth.uid;
       allow delete: if false;
 
@@ -51,13 +55,13 @@ service cloud.firestore {
           && request.resource.data.note.size() <= 200;
 
         // Il cliente può solo annullare il proprio ticket. Il resto è staff.
-        allow update: if isStaff(v)
+        allow update: if isStaff(v) || isVenueOwner(v)
           || (isSignedIn()
               && resource.data.uid == request.auth.uid
               && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
               && request.resource.data.status == 'cancelled');
 
-        allow delete: if isStaff(v);
+        allow delete: if isStaff(v) || isVenueOwner(v);
       }
     }
   }

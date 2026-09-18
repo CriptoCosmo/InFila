@@ -94,3 +94,20 @@ describe('Venue Rules', () => {
     }));
   });
 });
+
+describe('Ticket Rules', () => {
+  it('allows owner of venue to update a ticket', async () => {
+    await testEnv.withSecurityRulesDisabled(async (context) => {
+      const db = context.firestore();
+      await db.collection('venues').doc('v-ticket').set({ ownerUid: 'owner2', name: 'Venue with Tickets' });
+      await db.collection('venues').doc('v-ticket').collection('tickets').doc('t1').set({ status: 'waiting', uid: 'customer1' });
+    });
+
+    const db = testEnv.authenticatedContext('owner2').firestore();
+    const ticketRef = db.collection('venues').doc('v-ticket').collection('tickets').doc('t1');
+    
+    await assertSucceeds(ticketRef.update({
+      status: 'called'
+    }));
+  });
+});
