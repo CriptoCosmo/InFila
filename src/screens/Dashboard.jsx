@@ -6,16 +6,16 @@ import { Loader } from '../components.jsx';
 
 export default function Dashboard() {
   const { owner, loading: ownerLoading } = useOwnerAuth();
-  const { venues, loading: venuesLoading } = useOwnerVenues(owner?.uid);
+  const { venues, loading: venuesLoading, error: venuesError } = useOwnerVenues(owner?.uid);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!ownerLoading && !venuesLoading) {
-      if (venues.length === 0) {
-        navigate('/new-venue', { replace: true });
-      }
-    }
-  }, [ownerLoading, venuesLoading, venues.length, navigate]);
+    if (venuesError) console.error("Error fetching venues:", venuesError);
+  }, [venuesError]);
+
+  // We intentionally do not auto-redirect if venues.length === 0 
+  // because it can cause race conditions during venue creation.
+  // The user will just see the "Aggiungi locale" button instead.
 
   if (ownerLoading || venuesLoading) return <Loader scuro />;
 

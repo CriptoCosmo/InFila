@@ -45,13 +45,18 @@ export default function NewVenue() {
         return;
       }
       
-      const available = await checkSlugAvailable(currentSlug);
-      if (available) {
-        setSlugStatus('available');
-        setSuggestion('');
-      } else {
-        setSlugStatus('taken');
-        setSuggestion(suggestSlug(currentSlug));
+      try {
+        const available = await checkSlugAvailable(currentSlug);
+        if (available) {
+          setSlugStatus('available');
+          setSuggestion('');
+        } else {
+          setSlugStatus('taken');
+          setSuggestion(suggestSlug(currentSlug));
+        }
+      } catch (err) {
+        console.error("Slug check failed:", err);
+        setSlugStatus('invalid'); // fallback so they can't proceed with a broken state
       }
     }, 500);
 
@@ -83,6 +88,7 @@ export default function NewVenue() {
       navigate('/dashboard');
     } catch (err) {
       setIsCreating(false);
+      console.error("Errore durante la creazione del locale:", err);
       if (err.message.startsWith('slug-occupato')) {
         setSlugStatus('taken');
         const [, sug] = err.message.split(':');
