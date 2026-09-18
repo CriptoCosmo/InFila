@@ -1,6 +1,6 @@
 import {
   collection, doc, getDoc, getDocs, onSnapshot, query, where, orderBy, limit,
-  runTransaction, writeBatch, serverTimestamp, updateDoc, setDoc
+  runTransaction, writeBatch, serverTimestamp, updateDoc, setDoc, deleteDoc
 } from 'firebase/firestore';
 import { db, auth } from '../firebase.js';
 import { VERTICALS } from '../config/verticals.js';
@@ -172,4 +172,9 @@ export async function createVenue(owner, { name, slug, vertical }) {
   });
 
   return newDocRef.id;
+}
+
+export async function deleteVenue(venueId) {
+  if (!venueId) throw new Error('Manca ID locale');
+  await deleteDoc(doc(db, 'venues', venueId));
 }
