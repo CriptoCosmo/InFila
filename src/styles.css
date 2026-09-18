@@ -1,0 +1,385 @@
+/* InFila — Bottega design system */
+
+/* ===== TOKENS ===== */
+:root {
+  --cacao:      #2B2320;
+  --crema:      #F6EFE6;
+  --bianco:     #FFFFFF;
+  --terracotta: #B24A25;
+  --salvia:     #4F6B4C;
+  --pesca:      #F7DCCD;
+
+  --crema-bordo:   #EADFD3;
+  --grigio-testo:  #6E625B;
+  --crema-card:    #FBF6EF;
+  --salvia-light:  #E3EAE0;
+
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body:    'Figtree', system-ui, sans-serif;
+
+  --r-sm:   16px;
+  --r-md:   18px;
+  --r-lg:   24px;
+  --r-xl:   28px;
+  --r-card: 32px;
+  --r-pill: 999px;
+  --r: var(--r-md);
+
+  --shadow-card: 0 1px 0 #EADFD3, 0 20px 40px -24px rgba(43,35,32,.35);
+
+  --sp-1: 6px;  --sp-2: 10px; --sp-3: 14px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px;
+  --sp: var(--sp-5);
+}
+
+/* ===== BASE ===== */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--cacao);
+  background: var(--crema);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ===== SCHERMO (layout base cliente/staff/admin) ===== */
+.schermo {
+  min-height: 100dvh;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: max(var(--sp), env(safe-area-inset-top)) var(--sp) calc(var(--sp) * 2);
+  background: var(--crema);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp);
+}
+
+/* ===== INSEGNA ===== */
+.insegna { margin: 8px 0 0; }
+.insegna__occhiello {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--grigio-testo);
+}
+.insegna__titolo {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 7vw, 34px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  color: var(--cacao);
+}
+
+/* ===== STATO / ALERT ===== */
+.stato-coda {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--crema-card);
+  border-radius: var(--r-lg);
+  color: var(--grigio-testo);
+  font-size: 15px;
+  font-weight: 500;
+}
+.avviso {
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--pesca);
+  color: var(--terracotta);
+  font-weight: 600;
+}
+.errore { margin: 0; color: var(--terracotta); font-weight: 600; font-size: 15px; }
+
+/* ===== MODULO / CAMPO ===== */
+.modulo { display: flex; flex-direction: column; gap: 22px; }
+.campo { display: flex; flex-direction: column; gap: 8px; }
+.campo__etichetta { font-size: 15px; font-weight: 600; color: var(--cacao); }
+.campo__input {
+  height: 52px; padding: 0 20px; box-sizing: border-box;
+  border: 2px solid var(--crema-bordo); border-radius: var(--r-md);
+  background: var(--bianco); font-size: 17px; font-family: var(--font-body);
+}
+.campo__input:focus { border-color: var(--terracotta); outline: none; }
+.campo__aiuto { font-size: 13px; color: var(--grigio-testo); margin: 0; }
+
+/* ===== CONTATORE ===== */
+.contatore { display: flex; align-items: center; gap: 6px; }
+.contatore__btn {
+  width: 44px; height: 44px; border: 0; border-radius: var(--r-pill);
+  background: var(--pesca); color: var(--terracotta);
+  font-size: 22px; font-weight: 700; cursor: pointer;
+}
+.contatore__btn:active { opacity: .8; }
+.contatore__valore {
+  min-width: 44px; text-align: center;
+  font-family: var(--font-display); font-weight: 800;
+  letter-spacing: -.04em; color: var(--terracotta); font-size: 26px;
+}
+.contatore--piccolo .contatore__btn  { width: 36px; height: 36px; font-size: 18px; }
+.contatore--piccolo .contatore__valore { min-width: 32px; font-size: 18px; }
+
+/* ===== MENU ORDINE ===== */
+.menu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.menu__riga {
+  display: grid; grid-template-columns: 1fr auto auto;
+  align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--crema-bordo);
+}
+.menu__nome { font-weight: 500; }
+.menu__prezzo { color: var(--grigio-testo); font-size: 14px; }
+
+/* ===== AZIONI (bottoni schermo — stile Bottega) ===== */
+.azione {
+  display: block; height: 52px; padding: 0 26px; border: 0;
+  border-radius: var(--r-pill); font-family: var(--font-body);
+  font-weight: 700; font-size: 16px; cursor: pointer;
+  text-align: center; text-decoration: none; line-height: 52px;
+  background: var(--crema-bordo); color: var(--cacao);
+}
+.azione--principale { background: var(--terracotta); color: #fff; }
+.azione--principale:disabled { opacity: .45; cursor: not-allowed; }
+.azione--discreta {
+  background: var(--crema-card); color: var(--cacao);
+  height: 44px; line-height: 44px; font-size: 15px; font-weight: 600;
+  padding: 0 20px; border: 1.5px solid var(--crema-bordo);
+}
+.azione--discreta:disabled { opacity: .45; cursor: not-allowed; }
+
+/* .btn — classi spec Bottega */
+.btn {
+  height: 52px; padding: 0 26px; border: 0; border-radius: var(--r-pill);
+  font-family: var(--font-body); font-weight: 700; font-size: 16px; cursor: pointer;
+}
+.btn--primary   { background: var(--terracotta); color: #fff; }
+.btn--secondary { background: var(--crema-bordo); color: var(--cacao); font-size: 15px; font-weight: 600; }
+.btn--ghost     { background: var(--crema); color: var(--cacao); font-size: 14px; font-weight: 600; height: 44px; padding: 0 20px; }
+.btn--salvia    { background: var(--salvia-light); color: var(--salvia); font-weight: 700; }
+.btn:disabled   { opacity: .45; cursor: not-allowed; }
+
+/* ===== BADGE ===== */
+.badge { padding: 6px 14px; border-radius: var(--r-pill); font-size: 14px; font-weight: 700; }
+.badge--coda     { background: var(--salvia-light); color: var(--salvia); }
+.badge--chiamato { background: var(--terracotta); color: #fff; }
+
+/* ===== CARD ===== */
+.card {
+  background: var(--bianco); border-radius: var(--r-card);
+  padding: 24px 20px; display: flex; flex-direction: column; gap: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ===== RIQUADRO NUMERO ===== */
+.riquadro-numero {
+  background: var(--pesca); border-radius: var(--r-xl);
+  padding: 22px 18px; display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.riquadro-numero__etichetta { font-size: 14px; font-weight: 600; color: var(--terracotta); margin: 0; }
+.riquadro-numero__numero {
+  font-family: var(--font-display); font-size: clamp(72px, 25vw, 100px);
+  font-weight: 800; line-height: .85; letter-spacing: -.05em; color: var(--terracotta); margin: 0;
+}
+
+/* ===== PALLINI POSIZIONE ===== */
+.pallini { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.pallino { display: block; width: 16px; height: 16px; border-radius: var(--r-pill); background: var(--salvia); flex-shrink: 0; }
+.pallino--io { width: 26px; height: 26px; background: var(--terracotta); border: 3px solid var(--bianco); }
+
+/* ===== BIGLIETTO CLIENTE ===== */
+.biglietto { display: flex; flex-direction: column; gap: 16px; }
+.biglietto__nome { text-align: center; font-weight: 600; font-size: 17px; margin: 0; color: var(--grigio-testo); }
+.biglietto__ordine { text-align: center; color: var(--grigio-testo); font-size: 14px; margin: 0; }
+.biglietto__stato {
+  background: var(--bianco); border-radius: var(--r-lg);
+  padding: var(--sp-4) var(--sp-5); text-align: center;
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 6px;
+}
+.biglietto__riga { margin: 0; font-size: 17px; font-weight: 600; color: var(--cacao); }
+.biglietto__riga--forte {
+  font-family: var(--font-display); color: var(--terracotta);
+  font-size: 22px; font-weight: 800; letter-spacing: -.025em;
+}
+.biglietto__riga--tenue { color: var(--grigio-testo); font-weight: 500; font-size: 15px; }
+
+.schermo--tocca { background: var(--pesca); }
+.schermo--tocca .biglietto__stato { border: 2px solid var(--terracotta); animation: battito 1.6s ease-in-out 3; }
+@keyframes battito { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+
+.promemoria { margin: 0; color: var(--grigio-testo); font-size: 14px; text-align: center; }
+.ora-serviamo { margin: 0; text-align: center; color: var(--grigio-testo); font-size: 15px; }
+
+/* ===== STAFF ===== */
+.schermo--staff { max-width: 42rem; }
+.barra {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; padding: 12px 0;
+}
+.barra__nome { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -.025em; }
+.selettore-cassa { display: flex; gap: 6px; }
+.selettore-cassa__btn {
+  border: 2px solid var(--crema-bordo); border-radius: var(--r-pill);
+  background: var(--crema-card); padding: 8px 16px;
+  font-size: 14px; font-weight: 600; cursor: pointer; color: var(--cacao);
+}
+.selettore-cassa__btn.is-attiva { background: var(--terracotta); border-color: var(--terracotta); color: #fff; }
+
+.pannello {
+  background: var(--bianco); border-radius: var(--r-card);
+  padding: 24px; text-align: center;
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 10px;
+}
+.pannello__etichetta { margin: 0; color: var(--grigio-testo); font-size: 14px; font-weight: 600; }
+.pannello__numero {
+  margin: 0; font-family: var(--font-display);
+  font-size: clamp(56px, 18vw, 88px); font-weight: 800;
+  line-height: .95; letter-spacing: -.04em; color: var(--terracotta);
+}
+.pannello__dettaglio { margin: 0; font-weight: 600; color: var(--grigio-testo); font-size: 15px; }
+.pannello__nota { margin: 0; color: var(--terracotta); font-weight: 600; font-size: 15px; }
+.pannello__azioni { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+.pannello__secondarie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+.riga-coda {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-radius: var(--r-sm); background: var(--crema-card);
+}
+.riga-coda__numero { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--cacao); }
+.riga-coda__info   { font-size: 13px; color: var(--grigio-testo); }
+
+.lista__titolo {
+  font-family: var(--font-display); font-size: 18px; font-weight: 800;
+  letter-spacing: -.025em; margin: 0 0 8px; color: var(--cacao);
+}
+.lista { display: flex; flex-direction: column; }
+.lista ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.lista__vuota { color: var(--grigio-testo); margin: 0; font-size: 15px; }
+.lista__riga {
+  display: grid; grid-template-columns: 4.5rem 1fr auto;
+  align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: var(--r-sm); background: var(--crema-card);
+}
+.lista__numero { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--cacao); }
+.lista__chi { font-size: 15px; color: var(--cacao); }
+.lista__coperti { color: var(--grigio-testo); font-style: normal; font-size: 13px; }
+.lista__pos { color: var(--grigio-testo); font-size: 13px; }
+
+/* ===== MONITOR (Display.jsx) ===== */
+.display-schermo {
+  min-height: 100dvh;
+  background: var(--crema);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.monitor {
+  background: var(--crema-card); border-radius: var(--r-card); overflow: hidden;
+  padding: 24px; display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 20px;
+  width: 100%; max-width: 1400px; min-height: 60vh;
+  box-shadow: var(--shadow-card);
+}
+@media (max-width: 700px) {
+  .monitor { grid-template-columns: 1fr; min-height: unset; }
+  .display-schermo { padding: 12px; align-items: stretch; }
+}
+.monitor__numero {
+  background: var(--pesca); border-radius: var(--r-lg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; padding: 32px 24px;
+}
+.monitor__numero-etichetta { font-size: clamp(14px, 2vw, 18px); font-weight: 600; color: var(--terracotta); margin: 0; }
+.monitor__numero-grande {
+  font-family: var(--font-display); font-size: clamp(80px, 18vw, 150px);
+  font-weight: 800; line-height: .82; letter-spacing: -.05em; color: var(--terracotta); margin: 0;
+}
+.monitor__nome { font-size: clamp(15px, 2.2vw, 22px); font-weight: 600; color: var(--cacao); margin: 0; }
+.monitor__cassa-badge {
+  padding: 8px 18px; border-radius: var(--r-pill); background: var(--salvia);
+  color: #fff; font-weight: 700; font-size: clamp(13px, 1.8vw, 18px);
+}
+.monitor__lato { display: flex; flex-direction: column; gap: 16px; }
+.monitor__annuncio {
+  background: var(--salvia); color: #fff; border-radius: var(--r-lg);
+  padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; flex-grow: 1;
+}
+.monitor__annuncio-label  { font-size: 13px; font-weight: 600; opacity: .85; margin: 0; }
+.monitor__annuncio-titolo {
+  font-family: var(--font-display); font-size: clamp(20px, 3vw, 28px);
+  font-weight: 800; line-height: 1.05; margin: 0;
+}
+.monitor__annuncio-corpo  { font-size: 15px; opacity: .9; margin: 0; }
+.monitor__prossimi {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 14px; background: var(--bianco); border-radius: var(--r-md);
+}
+.monitor__prossimi-label  { font-size: 14px; font-weight: 600; color: var(--grigio-testo); white-space: nowrap; }
+.monitor__prossimi-badge  {
+  padding: 6px 14px; border-radius: var(--r-pill); background: var(--crema-card);
+  font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--cacao);
+}
+.monitor--chiamata .monitor__numero { animation: lampeggio-monitor 1s steps(1) 4; }
+@keyframes lampeggio-monitor {
+  0%,100% { background: var(--pesca); }
+  50%      { background: var(--terracotta); }
+}
+.monitor--chiamata .monitor__numero .monitor__numero-grande { animation: inherit; }
+@keyframes lampeggio-monitor {
+  0%,100% { background: var(--pesca); }
+  50%      { background: var(--terracotta); }
+}
+
+/* Annuncio a tutto schermo */
+.annuncio--pieno {
+  position: fixed; inset: 0;
+  background: var(--salvia); z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; padding: 40px;
+  flex-direction: column; gap: 20px; text-align: center;
+}
+.annuncio--pieno .monitor__annuncio-titolo { font-size: clamp(32px, 6vw, 64px); }
+.annuncio--pieno .monitor__annuncio-corpo  { font-size: clamp(18px, 2.5vw, 28px); }
+.annuncio__img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+
+/* ===== ADMIN ===== */
+.schermo--admin { max-width: 38rem; }
+.qr {
+  text-align: center; background: var(--bianco); border-radius: var(--r-card);
+  padding: 24px; box-shadow: var(--shadow-card);
+}
+.qr__canvas { width: 100%; max-width: 280px; height: auto; border-radius: var(--r-md); background: #fff; }
+.qr__url { margin: 12px 0 6px; font-size: 14px; color: var(--grigio-testo); word-break: break-all; }
+
+.versioni { display: flex; flex-direction: column; gap: 10px; }
+.versione {
+  display: flex; flex-direction: column; gap: 4px; text-align: left;
+  border: 2px solid var(--crema-bordo); border-radius: var(--r-md);
+  padding: 14px 18px; background: var(--bianco); cursor: pointer;
+}
+.versione.is-attiva { border-color: var(--terracotta); background: var(--pesca); }
+.versione__nome { font-weight: 700; color: var(--cacao); }
+.versione__hint { color: var(--grigio-testo); font-size: 14px; }
+
+.riepilogo { list-style: none; margin: 0; padding: 0; }
+.riepilogo li { padding: 9px 0; border-bottom: 1px solid var(--crema-bordo); font-size: 15px; }
+.collegamenti { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 8px; }
+
+/* ===== LOADER ===== */
+.caricamento {
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; background: var(--crema);
+}
+.caricamento--scuro { background: var(--crema-card); }
+.caricamento__barra {
+  width: 42px; height: 4px; background: var(--terracotta);
+  animation: scorri 1s ease-in-out infinite;
+}
+@keyframes scorri { 0%,100% { transform: scaleX(.3); } 50% { transform: scaleX(1); } }
+.caricamento__testo { color: var(--grigio-testo); font-size: 14px; }

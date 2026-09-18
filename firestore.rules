@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Lo staff è chi ha un documento in venues/{v}/staff/{uid}
+    function isStaff(v) {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/venues/$(v)/staff/$(request.auth.uid));
+    }
+
+    // Il cliente può toccare SOLO il contatore (lastNumber / counterDay) del locale.
+    function onlyCounterFields() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['lastNumber', 'counterDay']);
+    }
+
+    function isOwner(v) {
+      return isSignedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+
+    match /venues/{v} {
+      // La configurazione e il "numero in corso" sono pubblici: servono al QR e al monitor.
+      allow read: if true;
+      allow update: if isOwner(v) || (isSignedIn() && onlyCounterFields());
+      allow create: if isSignedIn() && request.resource.data.ownerUid == request.auth.uid;
+      allow delete: if false;
+
+      match /staff/{uid} {
+        allow read: if isStaff(v);
+        allow write: if false; // gestito da console / Admin SDK
+      }
+
+      match /tickets/{t} {
+        // La coda è di fatto pubblica (è esposta sul monitor in sala).
+        allow read: if isSignedIn();
+
+        // Il cliente crea il proprio ticket, con campi validati.
+        allow create: if isSignedIn()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.status == 'waiting'
+          && request.resource.data.number is int
+          && request.resource.data.number > 0
+          && request.resource.data.partySize is int
+          && request.resource.data.partySize >= 1
+          && request.resource.data.partySize <= 20
+          && (request.resource.data.name == null || request.resource.data.name.size() <= 40)
+          && request.resource.data.note.size() <= 200;
+
+        // Il cliente può solo annullare il proprio ticket. Il resto è staff.
+        allow update: if isStaff(v)
+          || (isSignedIn()
+              && resource.data.uid == request.auth.uid
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+              && request.resource.data.status == 'cancelled');
+
+        allow delete: if isStaff(v);
+      }
+    }
+  }
+}
