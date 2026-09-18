@@ -146,20 +146,27 @@ export default function NewVenue() {
 
         <div className="campo">
           <label className="campo__etichetta">Tipo di locale</label>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16, marginTop: 8 }}>
             {Object.entries(VERTICALS).map(([key, v]) => (
-              <label key={key} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', background: 'var(--crema-card)', padding: 16, borderRadius: 'var(--r-md)', border: vertical === key ? '2px solid var(--terracotta)' : '2px solid transparent' }}>
-                <input 
-                  type="radio" 
-                  name="vertical" 
-                  value={key}
-                  checked={vertical === key}
-                  onChange={() => setVertical(key)}
-                  style={{ marginTop: 4 }}
-                />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontWeight: 600, color: 'var(--cacao)', fontSize: 16 }}>{v.label}</span>
-                  <span style={{ fontSize: 14, color: 'var(--grigio-testo)' }}>{v.hint}</span>
+              <label key={key} style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', background: 'var(--crema-card)', borderRadius: 'var(--r-md)', border: vertical === key ? '2px solid var(--terracotta)' : '2px solid transparent', overflow: 'hidden', transition: 'transform 0.2s, border-color 0.2s', transform: vertical === key ? 'scale(1.02)' : 'scale(1)' }}>
+                {v.image && (
+                  <div style={{ width: '100%', height: 140, overflow: 'hidden' }}>
+                    <img src={v.image} alt={v.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: 16 }}>
+                  <input 
+                    type="radio" 
+                    name="vertical" 
+                    value={key}
+                    checked={vertical === key}
+                    onChange={() => setVertical(key)}
+                    style={{ marginTop: 4 }}
+                  />
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--cacao)', fontSize: 16 }}>{v.label}</span>
+                    <span style={{ fontSize: 14, color: 'var(--grigio-testo)' }}>{v.hint}</span>
+                  </div>
                 </div>
               </label>
             ))}

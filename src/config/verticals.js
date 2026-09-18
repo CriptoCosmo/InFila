@@ -48,6 +48,7 @@ export const VERTICALS = {
   panificio: {
     label: 'Panificio / Gastronomia',
     hint: 'Zero attriti: scansioni e hai il numero.',
+    image: '/illustrations/panificio.jpg',
     config: {
       ...DEFAULT_CONFIG,
       askName: false,
@@ -69,6 +70,7 @@ export const VERTICALS = {
   ristorante: {
     label: 'Ristorante / Pizzeria',
     hint: 'Nome e coperti: la lista d\'attesa dei tavoli.',
+    image: '/illustrations/ristorante.jpg',
     config: {
       ...DEFAULT_CONFIG,
       askName: true,
@@ -90,6 +92,7 @@ export const VERTICALS = {
   bar: {
     label: 'Bar / Take away',
     hint: 'Nome e ordine: prepari mentre sono ancora in coda.',
+    image: '/illustrations/bar.jpg',
     config: {
       ...DEFAULT_CONFIG,
       askName: true,
@@ -112,6 +115,7 @@ export const VERTICALS = {
   ufficio: {
     label: 'Sportello / Studio',
     hint: 'Nome e motivo della visita.',
+    image: '/illustrations/ufficio.jpg',
     config: {
       ...DEFAULT_CONFIG,
       askName: true,
