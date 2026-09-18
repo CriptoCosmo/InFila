@@ -150,8 +150,8 @@ export default function NewVenue() {
             {Object.entries(VERTICALS).map(([key, v]) => (
               <label key={key} style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', background: 'var(--crema-card)', borderRadius: 'var(--r-md)', border: vertical === key ? '2px solid var(--terracotta)' : '2px solid transparent', overflow: 'hidden', transition: 'transform 0.2s, border-color 0.2s', transform: vertical === key ? 'scale(1.02)' : 'scale(1)' }}>
                 {v.image && (
-                  <div style={{ width: '100%', height: 140, overflow: 'hidden' }}>
-                    <img src={v.image} alt={v.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ width: '100%', aspectRatio: '1/1', overflow: 'hidden', background: '#fff' }}>
+                    <img src={v.image} alt={v.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
                   </div>
                 )}
                 <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: 16 }}>
