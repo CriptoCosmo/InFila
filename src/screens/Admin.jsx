@@ -35,6 +35,11 @@ export default function Admin({ slug }) {
     setTimeout(() => setSalvato(false), 3000);
   }
 
+  async function aggiornaCasse(delta) {
+    const newVal = Math.max(1, Math.min(10, cfg.counters + delta));
+    await updateDoc(venueRef(venue.id), { 'config.counters': newVal });
+  }
+
   const handleDownloadQR = () => {
     if (!canvas.current) return;
     const link = document.createElement('a');
@@ -112,14 +117,28 @@ export default function Admin({ slug }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 8 }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span style={{ fontSize: 13, color: 'var(--grigio-testo)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dati richiesti</span>
-              <span style={{ fontWeight: 500 }}>Nome: {cfg.askName ? 'Sì' : 'No'}</span>
-              <span style={{ fontWeight: 500 }}>Gruppo: {cfg.askPartySize ? `Sì (max ${cfg.partyMax})` : 'No'}</span>
-              <span style={{ fontWeight: 500 }}>Ordine: {cfg.askOrder ? 'Sì' : 'No'}</span>
+              <span style={{ fontWeight: 500, marginTop: 4 }}>Nome: {cfg.askName ? 'Sì' : 'No'}</span>
+              <span style={{ fontWeight: 500, marginTop: 4 }}>Gruppo: {cfg.askPartySize ? `Sì (max ${cfg.partyMax})` : 'No'}</span>
+              <span style={{ fontWeight: 500, marginTop: 4 }}>Ordine: {cfg.askOrder ? 'Sì' : 'No'}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span style={{ fontSize: 13, color: 'var(--grigio-testo)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Coda</span>
-              <span style={{ fontWeight: 500 }}>Prefisso: {cfg.prefix || 'Nessuno'}</span>
-              <span style={{ fontWeight: 500 }}>Casse/Postazioni: {cfg.counters}</span>
+              <span style={{ fontWeight: 500, marginTop: 4 }}>Prefisso: {cfg.prefix || 'Nessuno'}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+                <span style={{ fontWeight: 500 }}>Casse: {cfg.counters}</span>
+                <div style={{ display: 'flex', gap: 4 }}>
+                  <button 
+                    onClick={() => aggiornaCasse(-1)} 
+                    disabled={cfg.counters <= 1} 
+                    style={{ padding: '0 8px', borderRadius: 4, border: '1px solid #ccc', background: 'transparent', cursor: cfg.counters <= 1 ? 'not-allowed' : 'pointer', fontSize: 16 }}
+                  >-</button>
+                  <button 
+                    onClick={() => aggiornaCasse(1)} 
+                    disabled={cfg.counters >= 10} 
+                    style={{ padding: '0 8px', borderRadius: 4, border: '1px solid #ccc', background: 'transparent', cursor: cfg.counters >= 10 ? 'not-allowed' : 'pointer', fontSize: 16 }}
+                  >+</button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
