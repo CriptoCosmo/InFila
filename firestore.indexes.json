@@ -13,6 +13,15 @@
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "day", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "number", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "tickets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "day", "order": "ASCENDING" },
         { "fieldPath": "number", "order": "ASCENDING" }
       ]
     },
