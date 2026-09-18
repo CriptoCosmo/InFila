@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { ensureAuth, auth, db } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { findVenueBySlug, watchVenue, watchQueue } from './queue.js';
@@ -104,20 +104,17 @@ export function useOwnerVenues(uid) {
       return;
     }
 
-    let alive = true;
     setState(s => ({ ...s, loading: true }));
 
     const q = query(collection(db, 'venues'), where('ownerUid', '==', uid));
-    getDocs(q).then((snap) => {
-      if (!alive) return;
+    const unsubscribe = onSnapshot(q, (snap) => {
       const venues = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       setState({ loading: false, venues, error: null });
-    }).catch((e) => {
-      if (!alive) return;
+    }, (e) => {
       setState({ loading: false, venues: [], error: e.message });
     });
 
-    return () => { alive = false; };
+    return () => unsubscribe();
   }, [uid]);
 
   return state;
