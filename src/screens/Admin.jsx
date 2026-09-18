@@ -122,9 +122,6 @@ export default function Admin({ slug }) {
               <span style={{ fontWeight: 500 }}>Casse/Postazioni: {cfg.counters}</span>
             </div>
           </div>
-          <p style={{ margin: 0, color: 'var(--grigio-testo)', fontSize: 13, marginTop: 8, padding: 12, backgroundColor: 'var(--crema)', borderRadius: 'var(--r-sm)' }}>
-            Queste impostazioni derivano dal modello scelto. Puoi sovrascriverle modificando il documento <code>venues/{venue.id}</code> nel database Firestore.
-          </p>
         </section>
 
       </div>
