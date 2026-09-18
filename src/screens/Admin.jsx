@@ -16,10 +16,10 @@ export default function Admin({ slug }) {
   const url = `${location.origin}/v/${slug}`;
 
   useEffect(() => {
-    if (canvas.current) {
+    if (canvas.current && !loading) {
       QRCode.toCanvas(canvas.current, url, { width: 320, margin: 1, color: { dark: '#1C1A17', light: '#FFFFFF' } });
     }
-  }, [url]);
+  }, [url, loading]);
 
   if (loading) return <Loader />;
   if (error || !venue) return <NotFound slug={slug} />;
