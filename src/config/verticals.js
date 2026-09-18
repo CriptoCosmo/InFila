@@ -47,7 +47,7 @@ export const DEFAULT_CONFIG = {
 export const VERTICALS = {
   panificio: {
     label: 'Panificio / Gastronomia',
-    hint: 'Zero attriti: scansioni e hai il numero.',
+    hint: 'Coda rapida: il cliente riceve subito il numero senza dover inserire alcun dato.',
     image: '/illustrations/panificio.jpg',
     config: {
       ...DEFAULT_CONFIG,
