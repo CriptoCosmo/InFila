@@ -48,6 +48,22 @@ export default function Admin({ slug }) {
     link.click();
   };
 
+  const [newAd, setNewAd] = useState({ title: '', body: '', seconds: 10 });
+
+  async function rimuoviAnnuncio(index) {
+    const newAds = [...(cfg.ads || [])];
+    newAds.splice(index, 1);
+    await updateDoc(venueRef(venue.id), { 'config.ads': newAds });
+  }
+
+  async function aggiungiAnnuncio(e) {
+    e.preventDefault();
+    if (!newAd.title) return;
+    const newAds = [...(cfg.ads || []), { kind: 'text', title: newAd.title, body: newAd.body, seconds: Number(newAd.seconds) }];
+    await updateDoc(venueRef(venue.id), { 'config.ads': newAds });
+    setNewAd({ title: '', body: '', seconds: 10 });
+  }
+
   return (
     <div className="schermo" style={{ paddingBottom: 64 }}>
       <header className="insegna" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
@@ -141,6 +157,75 @@ export default function Admin({ slug }) {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* ANNUNCI / PUBBLICITÀ */}
+        <section className="card">
+          <h2 style={{ margin: 0, fontSize: 18 }}>Annunci sul Monitor</h2>
+          <p style={{ margin: 0, color: 'var(--grigio-testo)', fontSize: 14 }}>
+            Questi messaggi compaiono a rotazione sul monitor in sala. Utili per promozioni, avvisi o comunicazioni di servizio.
+          </p>
+
+          {cfg.display?.adMode === 'off' && (
+            <div style={{ padding: 12, backgroundColor: 'var(--crema)', borderRadius: 'var(--r-sm)', color: 'var(--grigio-testo)', fontSize: 14, marginTop: 8 }}>
+              Nota: il tipo di locale "{VERTICALS[venue.vertical]?.label}" al momento non prevede la visualizzazione di annunci sul monitor.
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 16 }}>
+            {(!cfg.ads || cfg.ads.length === 0) ? (
+              <p style={{ margin: 0, fontStyle: 'italic', color: 'var(--grigio-testo)' }}>Nessun annuncio presente.</p>
+            ) : (
+              cfg.ads.map((ad, idx) => (
+                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 12, border: '1px solid var(--crema)', borderRadius: 'var(--r-sm)' }}>
+                  <div>
+                    <h3 style={{ margin: '0 0 4px', fontSize: 16, color: 'var(--cacao)' }}>{ad.title}</h3>
+                    {ad.body && <p style={{ margin: 0, fontSize: 14, color: 'var(--grigio-testo)' }}>{ad.body}</p>}
+                    <span style={{ fontSize: 12, color: 'var(--terracotta)', display: 'block', marginTop: 4 }}>Durata: {ad.seconds}s</span>
+                  </div>
+                  <button 
+                    onClick={() => rimuoviAnnuncio(idx)}
+                    className="btn btn--ghost" 
+                    style={{ color: 'var(--terracotta)', padding: '4px 8px', fontSize: 14 }}
+                  >
+                    Rimuovi
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+
+          <form onSubmit={aggiungiAnnuncio} style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24, padding: 16, backgroundColor: 'var(--crema-card)', borderRadius: 'var(--r-md)' }}>
+            <h3 style={{ margin: 0, fontSize: 16 }}>Aggiungi nuovo annuncio</h3>
+            <input 
+              type="text" 
+              placeholder="Titolo (es. Offerta del giorno)" 
+              value={newAd.title} 
+              onChange={e => setNewAd({ ...newAd, title: e.target.value })}
+              style={{ padding: '10px 12px', borderRadius: 'var(--r-sm)', border: '1px solid #ccc', fontSize: 15 }}
+              required
+            />
+            <input 
+              type="text" 
+              placeholder="Sottotitolo / Descrizione (opzionale)" 
+              value={newAd.body} 
+              onChange={e => setNewAd({ ...newAd, body: e.target.value })}
+              style={{ padding: '10px 12px', borderRadius: 'var(--r-sm)', border: '1px solid #ccc', fontSize: 15 }}
+            />
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <label style={{ fontSize: 14, color: 'var(--grigio-testo)' }}>Durata (secondi):</label>
+              <input 
+                type="number" 
+                min="3" max="60" 
+                value={newAd.seconds} 
+                onChange={e => setNewAd({ ...newAd, seconds: e.target.value })}
+                style={{ padding: '8px 12px', borderRadius: 'var(--r-sm)', border: '1px solid #ccc', width: 80, fontSize: 15 }}
+              />
+              <button type="submit" className="btn btn--primary" style={{ marginLeft: 'auto', padding: '8px 16px' }} disabled={!newAd.title}>
+                Aggiungi
+              </button>
+            </div>
+          </form>
         </section>
 
       </div>
