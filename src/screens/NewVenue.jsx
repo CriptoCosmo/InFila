@@ -91,8 +91,8 @@ export default function NewVenue() {
       console.error("Errore durante la creazione del locale:", err);
       if (err.message.startsWith('slug-occupato')) {
         setSlugStatus('taken');
-        const [, sug] = err.message.split(':');
-        if (sug) setSuggestion(sug);
+        const [, alternativeSlug] = err.message.split(':');
+        if (sug) setSuggestion(alternativeSlug);
         setError('Lo slug è appena stato preso da un altro utente. Scegline un altro.');
       } else {
         setError(err.message);
@@ -111,8 +111,8 @@ export default function NewVenue() {
         <h1 className="insegna__titolo">Nuovo locale</h1>
       </header>
 
-      <form className="modulo" onSubmit={handleSubmit} style={{ marginTop: 24 }}>
-        {error && <div className="avviso" style={{ color: 'var(--terracotta)' }}>{error}</div>}
+      <form className="modulo dashboard-mt" onSubmit={handleSubmit}>
+        {error && <div className="avviso text-terracotta">{error}</div>}
         
         <div className="campo">
           <label className="campo__etichetta">Nome del locale</label>
@@ -135,15 +135,15 @@ export default function NewVenue() {
             onChange={handleSlugChange}
             required
           />
-          <div className="campo__aiuto" style={{ minHeight: '1.5rem' }}>
+          <div className="campo__aiuto nv-status-wrap">
             {slugStatus === 'checking' && 'Verifica in corso...'}
-            {slugStatus === 'available' && <span style={{ color: 'var(--salvia)' }}>✓ Disponibile</span>}
-            {slugStatus === 'invalid' && <span style={{ color: 'var(--terracotta)' }}>Usa solo lettere minuscole, numeri e trattini.</span>}
+            {slugStatus === 'available' && <span className="text-salvia">✓ Disponibile</span>}
+            {slugStatus === 'invalid' && <span className="text-terracotta">Usa solo lettere minuscole, numeri e trattini.</span>}
             {slugStatus === 'taken' && (
-              <span style={{ color: 'var(--terracotta)' }}>
+              <span className="text-terracotta">
                 Non disponibile.{' '}
                 {suggestion && (
-                  <>Prova con: <button type="button" onClick={handleUseSuggestion} style={{ background:'none', border:'none', color:'var(--terracotta)', textDecoration:'underline', cursor:'pointer', padding:0 }}>{suggestion}</button></>
+                  <>Prova con: <button type="button" onClick={handleUseSuggestion} className="btn-link">{suggestion}</button></>
                 )}
               </span>
             )}
@@ -152,26 +152,26 @@ export default function NewVenue() {
 
         <div className="campo">
           <label className="campo__etichetta">Tipo di locale</label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16, marginTop: 8 }}>
+          <div className="nv-vertical-grid">
             {Object.entries(VERTICALS).map(([key, v]) => (
-              <label key={key} style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', background: 'var(--crema-card)', borderRadius: 'var(--r-md)', border: vertical === key ? '2px solid var(--terracotta)' : '2px solid transparent', overflow: 'hidden', transition: 'transform 0.2s, border-color 0.2s', transform: vertical === key ? 'scale(1.02)' : 'scale(1)' }}>
+              <label key={key} className={`nv-vertical-option ${vertical === key ? 'nv-vertical-option--active' : ''}`}>
                 {v.image && (
-                  <div style={{ width: '100%', aspectRatio: '1/1', overflow: 'hidden', background: '#fff' }}>
-                    <img src={v.image} alt={v.label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+                  <div className="nv-vertical-image-wrap">
+                    <img src={v.image} alt={v.label} className="nv-vertical-image" />
                   </div>
                 )}
-                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: 16 }}>
+                <div className="nv-vertical-content">
                   <input 
                     type="radio" 
                     name="vertical" 
                     value={key}
                     checked={vertical === key}
                     onChange={() => setVertical(key)}
-                    style={{ marginTop: 4 }}
+                    className="nv-vertical-radio"
                   />
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ fontWeight: 600, color: 'var(--cacao)', fontSize: 16 }}>{v.label}</span>
-                    <span style={{ fontSize: 14, color: 'var(--grigio-testo)' }}>{v.hint}</span>
+                  <div className="rules-col">
+                    <span className="nv-vertical-title">{v.label}</span>
+                    <span className="form-label">{v.hint}</span>
                   </div>
                 </div>
               </label>
@@ -181,9 +181,8 @@ export default function NewVenue() {
 
         <button 
           type="submit" 
-          className="azione" 
+          className="azione mt-16" 
           disabled={!formValid || isCreating}
-          style={{ marginTop: 16 }}
         >
           {isCreating ? 'Creazione in corso...' : 'Crea locale'}
         </button>

@@ -382,3 +382,20 @@ button, input { font: inherit; color: inherit; }
 }
 @keyframes scorri { 0%,100% { transform: scaleX(.3); } 50% { transform: scaleX(1); } }
 .caricamento__testo { color: var(--grigio-testo); font-size: 14px; }
+
+/* ===== UTILITIES ADDED DURING REFACTOR ===== */
+.mb-24 { margin-bottom: 24px; }
+.mt-24 { margin-top: 24px; }
+.mt-16 { margin-top: 16px; }
+.w-100 { width: 100%; }
+.text-terracotta { color: var(--terracotta); }
+.text-salvia { color: var(--salvia); }
+.btn-link { background: none; border: none; color: var(--terracotta); text-decoration: underline; cursor: pointer; padding: 0; }
+.admin-form-group { display: flex; flex-direction: column; gap: 24px; margin-top: 24px; }
+.venue-list-cards { display: flex; flex-direction: column; gap: 16px; }
+.dashboard-mt { margin-top: 24px; }
+.admin-occhiello { text-transform: none; letter-spacing: 0; }
+.admin-card--center { align-items: center; text-align: center; }
+.pb-64 { padding-bottom: 64px; }
+.m-0 { margin: 0; }
+.avviso--success { background-color: var(--salvia); color: #fff; margin-top: 8px; }

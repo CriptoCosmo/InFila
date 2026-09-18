@@ -16,8 +16,9 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 if (import.meta.env.DEV) {
-  connectFirestoreEmulator(db, 'localhost', 8080);
-  connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+  const host = window.location.hostname || 'localhost';
+  connectFirestoreEmulator(db, host, 8080);
+  connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true });
 }
 
 /** Accesso anonimo: al cliente non chiediamo nulla, ma ogni ticket ha un proprietario. */
