@@ -186,33 +186,44 @@ export default function Admin({ slug }) {
             )}
           </div>
 
-          <form onSubmit={aggiungiAnnuncio} className="ad-form">
-            <h3 className="ad-form__title">Aggiungi nuovo annuncio</h3>
-            <input 
-              type="text" 
-              placeholder="Titolo (es. Offerta del giorno)" 
-              value={newAd.title} 
-              onChange={e => setNewAd({ ...newAd, title: e.target.value })}
-              className="form-input"
-              required
-            />
-            <input 
-              type="text" 
-              placeholder="Sottotitolo / Descrizione (opzionale)" 
-              value={newAd.body} 
-              onChange={e => setNewAd({ ...newAd, body: e.target.value })}
-              className="form-input"
-            />
-            <div className="form-row">
-              <label className="form-label">Durata (secondi):</label>
+          <form onSubmit={aggiungiAnnuncio} className="admin-form-group ad-form-wrap">
+            <h3 className="admin-card__title">Aggiungi nuovo annuncio</h3>
+            
+            <div className="campo">
+              <label className="campo__etichetta">Titolo (Principale)</label>
               <input 
-                type="number" 
-                min="3" max="60" 
-                value={newAd.seconds} 
-                onChange={e => setNewAd({ ...newAd, seconds: e.target.value })}
-                className="form-input-number"
+                type="text" 
+                placeholder="es. Promo Colazione" 
+                value={newAd.title} 
+                onChange={e => setNewAd({ ...newAd, title: e.target.value })}
+                className="campo__input"
+                required
               />
-              <button type="submit" className="btn btn--primary form-submit" disabled={!newAd.title}>
+            </div>
+            
+            <div className="campo">
+              <label className="campo__etichetta">Sottotitolo / Descrizione (Opzionale)</label>
+              <input 
+                type="text" 
+                placeholder="es. Cornetto + Caffè a 2,50€" 
+                value={newAd.body} 
+                onChange={e => setNewAd({ ...newAd, body: e.target.value })}
+                className="campo__input"
+              />
+            </div>
+
+            <div className="ad-form-row">
+              <div className="campo ad-form-col">
+                <label className="campo__etichetta">Durata (secondi)</label>
+                <input 
+                  type="number" 
+                  min="3" max="60" 
+                  value={newAd.seconds} 
+                  onChange={e => setNewAd({ ...newAd, seconds: e.target.value })}
+                  className="campo__input"
+                />
+              </div>
+              <button type="submit" className="btn btn--primary ad-form-btn" disabled={!newAd.title}>
                 Aggiungi
               </button>
             </div>
