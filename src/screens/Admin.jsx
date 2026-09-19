@@ -12,6 +12,7 @@ export default function Admin({ slug }) {
   const { owner } = useOwnerAuth();
   const canvas = useRef(null);
   const [salvato, setSalvato] = useState(false);
+  const [newAd, setNewAd] = useState({ title: '', body: '', seconds: 10 });
 
   const url = `${location.origin}/v/${slug}`;
 
@@ -48,7 +49,6 @@ export default function Admin({ slug }) {
     link.click();
   };
 
-  const [newAd, setNewAd] = useState({ title: '', body: '', seconds: 10 });
 
   async function rimuoviAnnuncio(index) {
     const newAds = [...(cfg.ads || [])];
